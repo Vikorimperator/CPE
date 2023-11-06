@@ -1,55 +1,56 @@
 CPE
 ==============================
 
-Proyecto para realizar sinteticos de los registros de pozos para el Campo Caparroso-Pijije-Escuintle
+Proyecto para normalizar y realizar sinteticos de los registros de pozos para el Campo Caparroso-Pijije-Escuintle
 
-Project Organization
+Organización del Proyecto
 ------------
 
     ├── LICENSE
-    ├── Makefile           <- Makefile with commands like `make data` or `make train`
-    ├── README.md          <- The top-level README for developers using this project.
+    ├── README.md          <- El archivo README de nivel superior para desarrolladores que utilizan este proyecto.
     ├── data
-    │   ├── external       <- Data from third party sources.
-    │   ├── interim        <- Intermediate data that has been transformed.
-    │   ├── processed      <- The final, canonical data sets for modeling.
-    │   └── raw            <- The original, immutable data dump.
+    │   ├── interim        <- Datos intermedios que han sido transformados.
+    │   ├── processed      <- Los conjuntos de datos finales, resultados.
+    │   └── raw            <- El volcado de datos original e inmutable.
     │
-    ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
+    ├── docs               <- Un proyecto Sphinx predeterminado.
     │
-    ├── models             <- Trained and serialized models, model predictions, or model summaries
+    ├── models             <- Modelos entrenados y serializados, predicciones de modelos o resúmenes de modelos.
     │
-    ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-    │                         the creator's initials, and a short `-` delimited description, e.g.
-    │                         `1.0-jqp-initial-data-exploration`.
+    ├── notebooks          <- Cuadernos Jupyter. La convención de nomenclatura es un número (para ordenar),
+    │                         las iniciales del creador y una breve descripción delimitada por `-`.
     │
-    ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
+    ├── references         <- Diccionarios de datos, manuales y todos los demás materiales explicativos.
     │
-    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-    │   └── figures        <- Generated graphics and figures to be used in reporting
+    ├── reports            <- Análisis generados como HTML, PDF, LaTeX, etc.
+    │   └── figures        <- Gráficos y figuras generados que se utilizarán en los informes.
     │
-    ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-    │                         generated with `pip freeze > requirements.txt`
+    ├── requirements.txt   <- El archivo de requisitos para reproducir el entorno de análisis..
     │
-    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
-    ├── src                <- Source code for use in this project.
-    │   ├── __init__.py    <- Makes src a Python module
+    ├── setup.py           <- hace que el proyecto pip sea instalable para que se pueda importar src.
+    ├── src                <- Código fuente para usar en este proyecto.
+    │   ├── __init__.py    <- Hace que src sea un módulo de Python.
     │   │
-    │   ├── data           <- Scripts to download or generate data
-    │   │   └── make_dataset.py
+    │   ├── data_transform <- Scripts para transformar o procesar datos.
+    │   │   ├── __init__.py
+    │   │   ├── load_csv.py
+    │   │   ├── map_cimas_to_depth_multiple.py
+    │   │   ├── normalize_well_log.py
+    │   │   ├── normalize_well_logs_by_cima.py
+    │   │   ├── print_unique_values.py
+    │   │   └── save_data_csv.py    
     │   │
-    │   ├── features       <- Scripts to turn raw data into features for modeling
+    │   ├── features       <- Scripts para convertir datos sin procesar en funciones para modelar
     │   │   └── build_features.py
     │   │
-    │   ├── models         <- Scripts to train models and then use trained models to make
-    │   │   │                 predictions
+    │   ├── models         <- Scripts para entrenar modelos y luego usar modelos entrenados para hacer predicciones.
     │   │   ├── predict_model.py
     │   │   └── train_model.py
     │   │
-    │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
+    │   └── visualization  <- Scripts para crear visualizaciones exploratorias y orientadas a resultados.
     │       └── visualize.py
     │
-    └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
+    └── tox.ini            <- Archivo tox con configuraciones para ejecutar tox
 
 
 --------
