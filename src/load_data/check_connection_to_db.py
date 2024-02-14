@@ -1,6 +1,8 @@
+# Cargamos los modulos a emplear
 import psycopg2
 from dotenv import load_dotenv
 import os
+import sys
 
 # Cargamos variables de entorno
 load_dotenv()
