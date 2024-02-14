@@ -62,7 +62,6 @@ target/
 # Database
 *.db
 *.rdb
-*.sql
 
 # Pycharm
 .idea
@@ -78,7 +77,6 @@ target/
 
 # exclude data from source control by default
 /data/
-/sql/
 
 # Mac OS-specific storage files
 .DS_Store
