@@ -54,6 +54,7 @@ def map_cimas_create_columns(cimas_df: pd.DataFrame, well_df: pd.DataFrame, peri
         well_df['jurasico'] = well_df['cima'].apply(lambda x: x in jurasico)
         well_df['terciario'] = well_df['cima'].apply(
             lambda x: not (x in cretacico or x in jurasico))
+
     else:
         # Obtén las columnas booleanas para cada etiqueta y establece el nombre de la columna como el valor de la etiqueta
         df_etiquetas = pd.get_dummies(well_df["cima"])
