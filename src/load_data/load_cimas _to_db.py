@@ -1,16 +1,10 @@
 # Cargamos los modulos a emplear
 import psycopg2
 from psycopg2 import sql
-import pandas as pd
 from io import StringIO
 import os
 import sys
 from dotenv import load_dotenv
-
-# Definimos las rutas de los archivos a emplear
-notebook_dir = os.getcwd()
-scripts_dir = os.path.join(notebook_dir, "..", "src")
-sys.path.append(scripts_dir)
 
 # Cargamos variables de entorno
 load_dotenv()
@@ -23,7 +17,7 @@ DB_HOST = os.getenv('DB_HOST')
 DB_PORT = os.getenv('DB_PORT')
 
 # Conexión a la base de datos
-conn = psycopg2.connet(
+conn = psycopg2.connect(
     dbname=DB_NAME,
     user=DB_USER,
     password=DB_PASSWORD,
@@ -33,12 +27,18 @@ conn = psycopg2.connet(
 
 # Creamos un cursor y abrimos un archivo temporal para copiar los datos
 cur = conn.cursor()
-temp_file = StringIO()
-temp_file.write(csv_data)
-temp_file.seek(0)
 
-# Copiamos los datos desde el archivo temporal a la tabla cimas
-cur.copy_from(temp_file, 'cimas', columns=df.columns, sep='\t')
+# Nombre del campo a insertar
+nombre_campo = "Caparroso-Pijije-Escuintle"
+
+# Query para insertar el campo en la tabla campos
+query = sql.SQL(
+    "INSERT INTO campos (nombre_campo, fecha_creacion, actualizado) VALUES (%s, now(), now())")
+
+# Ejecutar la consulta con el nombre del campo
+cur.execute(query, [nombre_campo])
+
+# Confirmar la inserción
 conn.commit()
 
 # Cerramos la conexión y el cursor
