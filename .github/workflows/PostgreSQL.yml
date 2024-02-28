@@ -1,0 +1,33 @@
+name: Conexión a PostgreSQL
+
+on:
+  workflow_dispatch:
+  
+jobs:
+  conectar-db:
+    runs-on: ubuntu-latest    
+    steps:
+      - name: Obtener código
+        uses: actions/checkout@v3
+
+      - name: Configurar PostgreSQL
+        uses: docker://postgres:latest
+        env: 
+          POSTGRES_USER: ${{ secrets.DB_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          POSTGRES_DB: petrofisica
+        with:
+          args: >
+            -p 5432:5432
+            --name my-postgres
+            -d postgres
+            -c max_connections=300
+
+      - name: Conectar a PostgreSQL
+        run: |
+          if [ ${{ steps.conexion-db.outcome }} == 'succes' ]; then
+            echo "Conexión exitosa a la base de datos."
+          else
+            echo "Error al conectar a la base de datos."
+            exit 1
+          fi
