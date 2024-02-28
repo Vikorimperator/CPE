@@ -1,0 +1,33 @@
+name: Varios Jobs entrelazados
+
+# Controla cuando se ejecutara el flujo de trabajo
+on:
+  # Te permite ejecutar este flujo de trabajo manualmente desde la pestaña de Actions
+  workflow_dispatch:
+
+# Una ejecución de flujo de trabajo se compone de uno o más trabajos que se pueden ejecutar de forma secuencial o en paralelo.
+jobs:
+  extraer:
+    # El tipo de runner que ejecutara el job
+    runs-on: ubuntu-latest
+
+    # Steps representan una secuencia de actividades que seran ejecutadas como parte del job
+    steps:
+      # Checa tu repositorio debajo de $GITHUB_WORKSPACE, para que el job pueda acceder a el
+      - uses: actions/checkout@v3
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: ls .
+
+  transformar:
+    runs-on: ubuntu-latest
+    needs: extraer
+    steps:
+      - run: echo 'Hola Mundo, ¡soy transformar!'
+
+  cargar:
+    runs-on: ubuntu-latest
+    needs: transformar
+    steps:
+      - run: echo '¡Llegamos al final!'
+  
