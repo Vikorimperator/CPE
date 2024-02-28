@@ -18,7 +18,7 @@ jobs:
           POSTGRES_DB: petrofisica
         with:
           args: >
-            -p 5432:5432
+            -p 5432
             --name my-postgres
             -d postgres
             -c max_connections=300
