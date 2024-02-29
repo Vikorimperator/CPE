@@ -31,14 +31,22 @@ cur = conn.cursor()
 # Nombre del campo a insertar
 nombre_campo = "Caparroso-Pijije-Escuintle"
 
-# Query para insertar el campo en la tabla campos
-query = sql.SQL(
-    "INSERT INTO campos (nombre_campo, fecha_creacion, actualizado) VALUES (%s, now(), now())")
+# Query para verificar si el campo ya existe en la tabla campos
+query_check = sql.SQL(
+    "SELECT campo_id FROM campos WHERE nombre_campo = %s")
+cur.execute(query_check, [nombre_campo])
+existing_campo = cur.fetchone()
 
-# Ejecutar la consulta con el nombre del campo
-cur.execute(query, [nombre_campo])
+if existing_campo:
+    print(f"El campo '{nombre_campo}' ya existe en la base de datos.")
+else:
+    # Query para insertar el campo en la tabla campos
+    query_insert = sql.SQL(
+        "INSERT INTO public.campos (nombre_campo, fecha_creacion, actualizado) VALUES (%s, now(), now())")
+    cur.execute(query_insert, [nombre_campo])
+    print(f"Se ha insertado el campo '{nombre_campo}' en la base de datos.")
 
-# Confirmar la inserción
+# Confirmar la inserción o la verificación
 conn.commit()
 
 # Cerramos la conexión y el cursor
