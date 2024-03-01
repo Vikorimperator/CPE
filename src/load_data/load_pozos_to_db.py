@@ -66,13 +66,20 @@ query = "SELECT campo_id FROM campos WHERE nombre_campo = %s"
 cur.execute(query, (campo,))
 campo_id = cur.fetchone()[0]
 
-# Insertar registros en la tabla pozos utilizando el campo_id obtenido
-def insert_well_logs(row):
-    query = "INSERT INTO pozos (nombre_pozo, campo_id, fecha_creacion, actualizado) VALUES (%s, %s, now(), now())"
-    cur.execute(query, (row["wellname"], campo_id))
+# Insertar registros en la tabla pozos utilizando los valores únicos de wellname y campo
+for pozo in pozos_unicos:
+    # Verificar si el pozo ya existe en la base de datos
+    query_check = "SELECT COUNT(*) FROM pozos WHERE nombre_pozo = %s"
+    cur.execute(query_check, (pozo,))
+    existe_pozo = cur.fetchone()[0]
 
-# Aplicar la función insert_well_logs a cada fila del DataFrame well_logs_df
-well_logs_df.apply(insert_well_logs, axis=1)
+    if existe_pozo == 0:
+        # El pozo no existe, se puede insertar
+        query_insert = "INSERT INTO pozos (nombre_pozo, campo_id, fecha_creacion, actualizado) VALUES (%s, %s, now(), now())"
+        cur.execute(query_insert, (pozo, campo_id))
+
+    else:
+        print(f"El pozo '{pozo}' ya existe en la base de datos.")
 
 # Confirmar la inserción
 conn.commit()
