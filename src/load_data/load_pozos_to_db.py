@@ -1,4 +1,4 @@
-# cargamos los modulos a emplear
+# Cargamos los modulos a emplear
 from dotenv import load_dotenv
 from io import StringIO
 from psycopg2 import sql
