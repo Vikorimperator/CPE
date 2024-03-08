@@ -51,7 +51,7 @@ conn = psycopg2.connect(
     port=DB_PORT
 )
 
-# Creamos un cursor y abrimos un archivo temporal para copiar los datos
+# Creamos un cursor
 cur = conn.cursor()
 
 # Obtener todos los pozos de la base de datos
@@ -65,9 +65,20 @@ cimas_df.drop(columns=['wellname', 'nombre_pozo', 'zonedescription'], inplace=Tr
 
 # Insertar valores en la tabla cimas
 for index, row in cimas_df.iterrows():
-    query = sql.SQL("INSERT INTO cimas (nombre_cima, pozo_id, cima_md, fecha_creacion, actualizado) VALUES (%s, %s, %s, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)")
-    values = (row['surface'], row['pozo_id'], row['md'])
-    cur.execute(query, values)
+    # Verificar si la cima ya existe
+    cur.execute("SELECT cima_id FROM cimas WHERE nombre_cima = %s AND pozo_id = %s", (row['surface'], row['pozo_id']))
+    existing_cima = cur.fetchone()
+    if existing_cima:
+        print(f"La cima {row['surface']} para el pozo {row['pozo_id']} ya existe.")
+    else:
+        query = sql.SQL("INSERT INTO cimas (nombre_cima, pozo_id, cima_md, fecha_creacion, actualizado) VALUES (%s, %s, %s, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)")
+        values = (row['surface'], row['pozo_id'], row['md'])
+        print(f"Intentando insertar: {values}")
+        try:
+            cur.execute(query, values)
+            print("Inserción exitosa.")
+        except Exception as e:
+            print(f"Error al insertar: {e}")
 
 # Cerrar conexión
 cur.close()
