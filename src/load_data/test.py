@@ -34,16 +34,18 @@ cur = conn.cursor()
 pozo = "Caparroso-71"
 query = "SELECT pozo_id FROM pozos WHERE nombre_pozo = %s"
 cur.execute(query, (pozo,))
-pozo_id = cur.fetchone()[0]
+result = cur.fetchone()
 
-# Intentamos insertar el nuevo registro
-try:
-    cur.execute("INSERT INTO cimas (nombre_cima, pozo_id, cima_md, fecha_creacion, actualizado) VALUES (%s, %s, 100.0, now(), now())", ('NombreCima999', pozo_id))
-    values = ('NombreCima999', pozo_id)
-    print(f"Intentando insertar: {values}")
-    print("Inserción exitosa.")
-except Exception as e:
-    print(f"Error al insertar el registro: {e}")
+if result is not None:
+    pozo_id = result[0]
+    # Intentamos insertar el nuevo registro
+    try:
+        cur.execute("INSERT INTO cimas (nombre_cima, pozo_id, cima_md, fecha_creacion, actualizado) VALUES ('ejemplocima1', %s, 1000.0, now(), now())", (pozo_id,))
+        print("Inserción exitosa.")
+    except Exception as e:
+        print(f"Error al insertar el registro: {e}")
+else:
+    print(f"No se encontró el pozo '{pozo}'.")
 
 # Cerrar conexión
 cur.close()
